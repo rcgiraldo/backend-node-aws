@@ -3,14 +3,16 @@ export interface mergedFilm {
   fecha_estreno: string
   episodio_id?: number
   apertura?: string
+  director: string
+  productor: string
   personajes: string[]
   planetas: string[]
-  genero: string[]
-  duracion: number
-  lema: string
+  naves_estelares: string[]
+  vehiculos: string[]
+  especies: string[]
+  popularidad: number
   calificacion_promedio: number
   cantidad_votos: number
   presupuesto: number
   ingresos: number
-  poster_url: string
 }
