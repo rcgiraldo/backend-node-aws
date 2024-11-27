@@ -1,13 +1,13 @@
 export interface swapiFilm {
-  title: string
-  episode_id: number
-  opening_crawl: string
+  titulo: string
+  episodio_id: number
+  apertura: string
   director: string
-  producer: string
-  release_date: string
-  characters: string[]
-  planets: string[]
-  starships: string[]
-  vehicles: string[]
-  species: string[]
+  productor: string
+  fecha_estreno: string
+  personajes: string[]
+  planetas: string[]
+  naves_estelares: string[]
+  vehiculos: string[]
+  especies: string[]
 }

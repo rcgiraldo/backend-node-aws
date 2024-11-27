@@ -1,16 +1,16 @@
 export interface mergedFilm {
-  title: string
-  release_date: string
-  episode_id?: number
-  opening_crawl?: string
-  characters: string[]
-  planets: string[]
-  genres: string[]
-  runtime: number
-  tagline: string
-  vote_average: number
-  vote_count: number
-  budget: number
-  revenue: number
-  poster_path: string
+  titulo: string
+  fecha_estreno: string
+  episodio_id?: number
+  apertura?: string
+  personajes: string[]
+  planetas: string[]
+  genero: string[]
+  duracion: number
+  lema: string
+  calificacion_promedio: number
+  cantidad_votos: number
+  presupuesto: number
+  ingresos: number
+  poster_url: string
 }

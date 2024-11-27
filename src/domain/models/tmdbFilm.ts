@@ -1,15 +1,15 @@
 export interface tmdbFilm {
-  title: string
-  original_title: string
-  overview: string
-  release_date: string
-  genres: { id: number; name: string }[]
-  runtime: number
-  tagline: string
-  vote_average: number
-  vote_count: number
-  budget: number
-  revenue: number
-  poster_path: string
-  production_companies: { id: number; name: string }[]
+  titulo: string
+  titulo_original: string
+  resumen: string
+  fecha_estreno: string
+  genero: { id: number; nombre: string }[]
+  duracion: number
+  lema: string
+  calificacion_promedio: number
+  cantidad_votos: number
+  presupuesto: number
+  ingresos: number
+  poster_url: string
+  companias_productoras: { id: number; nombre: string }[]
 }
