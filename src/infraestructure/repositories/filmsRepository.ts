@@ -1,9 +1,10 @@
-import { DynamoDB } from 'aws-sdk'
-import { mergedFilm } from '../../domain/models/mergedFilm'
-import { IFilmRepository } from '../../domain/interfaces/IFilmsRepository'
+import { DynamoDB } from "aws-sdk"
+import { mergedFilm } from "../../domain/models/mergedFilm"
+import { IFilmRepository } from "../../domain/interfaces/IFilmsRepository"
 
 const dynamoDB = new DynamoDB.DocumentClient()
-const TABLE_NAME = process.env.FILMS_TABLE_NAME || 'Films'
+const TABLE_NAME = process.env.FILMS_TABLE_NAME || "Films"
+const INDEX_NAME = "CreatedAtIndex"
 
 export const FilmRepository = (): IFilmRepository => ({
   createFilms: async (
@@ -33,12 +34,48 @@ export const FilmRepository = (): IFilmRepository => ({
           error: {
             message:
               error.message ||
-              'An unknown error ocurred trying to save this film',
+              "An unknown error ocurred trying to save this film",
           },
         })
       }
     }
 
     return result
+  },
+
+  getPaginatedFilms: async (
+    lastKey?: DynamoDB.DocumentClient.Key,
+    limit = 10
+  ): Promise<{
+    success: mergedFilm[]
+    lastEvaluatedKey?: DynamoDB.DocumentClient.Key
+    error?: string
+  }> => {
+    const params: DynamoDB.DocumentClient.ScanInput = {
+      TableName: TABLE_NAME,
+      Limit: limit,
+      ExclusiveStartKey: lastKey,
+    }
+    try {
+      const result = await dynamoDB.scan(params).promise()
+
+      const sortedItems = (result.Items as mergedFilm[]).sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+
+      return {
+        success: sortedItems,
+        lastEvaluatedKey: result.LastEvaluatedKey,
+      }
+    } catch (error: any) {
+      console.error("Error trying to get paginated films", error)
+      return {
+        success: [],
+        error:
+          error.message ||
+          "An unknown error occurred trying to get paginated films",
+      }
+    }
   },
 })

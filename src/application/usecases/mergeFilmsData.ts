@@ -1,13 +1,13 @@
-import { IFilmRepository } from '../../domain/interfaces/IFilmsRepository'
-import { mergedFilm } from '../../domain/models/mergedFilm'
-import { swapiFilm } from '../../domain/models/swapiFilm'
-import { tmdbFilm } from '../../domain/models/tmdbFilm'
-import { getMoviesFromSwapi } from '../../infraestructure/api/swapiService'
-import { getStarWarsMoviesFromTmdb } from '../../infraestructure/api/tmdbService'
-import { mapSwapiFilmFields } from '../mappers/swapiFilmMapper'
-import { mapTmdbFilmFields } from '../mappers/tmdbFilmMapper'
-import { saveMergedFilmService } from '../services/filmService'
-import { v4 as uuidv4 } from 'uuid'
+import { IFilmRepository } from "../../domain/interfaces/IFilmsRepository"
+import { mergedFilm } from "../../domain/models/mergedFilm"
+import { swapiFilm } from "../../domain/models/swapiFilm"
+import { tmdbFilm } from "../../domain/models/tmdbFilm"
+import { getMoviesFromSwapi } from "../../infraestructure/api/swapiService"
+import { getStarWarsMoviesFromTmdb } from "../../infraestructure/api/tmdbService"
+import { mapSwapiFilmFields } from "../mappers/swapiFilmMapper"
+import { mapTmdbFilmFields } from "../mappers/tmdbFilmMapper"
+import { saveMergedFilmService } from "../services/filmService"
+import { v4 as uuidv4 } from "uuid"
 
 export const mergeFilmData = async (
   filmsRepository: IFilmRepository
@@ -37,6 +37,7 @@ export const mergeFilmData = async (
             cantidad_votos: tmdbFilmObj.cantidad_votos,
             presupuesto: tmdbFilmObj.presupuesto,
             ingresos: tmdbFilmObj.ingresos,
+            createdAt: new Date().toISOString(),
           }
         }
 
@@ -48,6 +49,7 @@ export const mergeFilmData = async (
           cantidad_votos: null,
           presupuesto: null,
           ingresos: null,
+          createdAt: new Date().toISOString(),
         }
       }
     )
@@ -57,7 +59,7 @@ export const mergeFilmData = async (
 
     return mergedFilms
   } catch (error) {
-    console.error('Error trying to merge the data', error)
-    throw new Error('Error trying to merge the data')
+    console.error("Error trying to merge the data", error)
+    throw new Error("Error trying to merge the data")
   }
 }

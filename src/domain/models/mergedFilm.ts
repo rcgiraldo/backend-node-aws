@@ -1,4 +1,5 @@
 export interface mergedFilm {
+  id: string
   titulo: string
   fecha_estreno: string
   episodio_id?: number
@@ -15,4 +16,5 @@ export interface mergedFilm {
   cantidad_votos?: number
   presupuesto?: number
   ingresos?: number
+  createdAt: string
 }

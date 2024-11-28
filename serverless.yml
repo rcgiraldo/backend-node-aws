@@ -32,12 +32,24 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
+        GlobalSecondaryIndexes:
+          - IndexName: CreatedAtIndex
+            KeySchema:
+              - AttributeName: createdAt
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 5
+              WriteCapacityUnits: 5
 
     CustomDataTable:
       Type: AWS::DynamoDB::Table
@@ -95,3 +107,10 @@ functions:
       - httpApi:
           path: /almacenar
           method: post
+
+  getPaginatedFilms:
+    handler: src/application/handlers/filmHandler.getPaginatedFilmsHandler
+    events:
+      - httpApi:
+          path: /historial
+          method: get

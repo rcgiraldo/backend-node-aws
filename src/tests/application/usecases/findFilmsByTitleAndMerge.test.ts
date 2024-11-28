@@ -1,4 +1,5 @@
 import { jest } from "@jest/globals"
+import { DynamoDB } from "aws-sdk"
 
 import { findFilmsByTitleAndMerge } from "../../../application/usecases/findFilmsByTitleAndMerge"
 import { getMoviesByTitleFromSwapi } from "../../../infraestructure/api/swapiService"
@@ -35,8 +36,20 @@ describe("findFilmsByTitleAndMerge", () => {
     }>
   > = jest.fn()
 
+  const mockGetPaginatedFilms: jest.MockedFunction<
+    (
+      lastKey?: DynamoDB.DocumentClient.Key,
+      limit?: number
+    ) => Promise<{
+      success: mergedFilm[]
+      lastEvaluatedKey?: DynamoDB.DocumentClient.Key
+      error?: string
+    }>
+  > = jest.fn()
+
   const mockFilmsRepository: IFilmRepository = {
     createFilms: mockCreateFilms,
+    getPaginatedFilms: mockGetPaginatedFilms,
   }
 
   //Antes de cada prueba, limpiamos los Mocks
@@ -45,6 +58,11 @@ describe("findFilmsByTitleAndMerge", () => {
     mockCreateFilms.mockResolvedValue({
       success: [],
       errors: [],
+    })
+    mockGetPaginatedFilms.mockResolvedValue({
+      success: [],
+      lastEvaluatedKey: undefined,
+      error: undefined,
     })
   })
 
