@@ -1,40 +1,40 @@
-import { IFilmRepository } from '../../domain/interfaces/IFilmsRepository'
-import { mergedFilm } from '../../domain/models/mergedFilm'
-import { getMoviesByTitleFromSwapi } from '../../infraestructure/api/swapiService'
-import { getStarWarsMoviesFromTmdb } from '../../infraestructure/api/tmdbService'
-import { mapSwapiFilmFields } from '../mappers/swapiFilmMapper'
-import { mapTmdbFilmFields } from '../mappers/tmdbFilmMapper'
-import { swapiFilm } from '../../domain/models/swapiFilm'
-import { tmdbFilm } from '../../domain/models/tmdbFilm'
-import { saveMergedFilmService } from '../services/filmService'
-import { v4 as uuidv4 } from 'uuid'
+import { IFilmRepository } from "../../domain/interfaces/IFilmsRepository";
+import { mergedFilm } from "../../domain/models/mergedFilm";
+import { getMoviesByTitleFromSwapi } from "../../infraestructure/api/swapiService";
+import { getStarWarsMoviesFromTmdb } from "../../infraestructure/api/tmdbService";
+import { mapSwapiFilmFields } from "../mappers/swapiFilmMapper";
+import { mapTmdbFilmFields } from "../mappers/tmdbFilmMapper";
+import { swapiFilm } from "../../domain/models/swapiFilm";
+import { tmdbFilm } from "../../domain/models/tmdbFilm";
+import { saveMergedFilmService } from "../services/filmService";
+import { v4 as uuidv4 } from "uuid";
 
 export const findFilmsByTitleAndMerge = async (
   title: string,
   filmsRepository: IFilmRepository
 ): Promise<mergedFilm[]> => {
   try {
-    const swapiFilms = await getMoviesByTitleFromSwapi(title)
-    const tmdbFilms = await getStarWarsMoviesFromTmdb()
+    const swapiFilms = await getMoviesByTitleFromSwapi(title);
+    const tmdbFilms = await getStarWarsMoviesFromTmdb();
 
-    console.log('SWAPI Films:', swapiFilms)
-    console.log('TMDb Films:', tmdbFilms)
+    console.log("SWAPI Films:", swapiFilms);
+    console.log("TMDb Films:", tmdbFilms);
     if (!swapiFilms.length || !tmdbFilms.length) {
       throw new Error(
         `No films found with title: ${title} in either SWAPI or TMDb`
-      )
+      );
     }
 
-    const mappedSwapiFilms = swapiFilms.map(mapSwapiFilmFields)
-    const mappedTmdbFilms = tmdbFilms.map(mapTmdbFilmFields)
+    const mappedSwapiFilms = swapiFilms.map(mapSwapiFilmFields);
+    const mappedTmdbFilms = tmdbFilms.map(mapTmdbFilmFields);
 
     const mergedFilms: mergedFilm[] = mappedSwapiFilms.map(
       (swapiFilmObj: swapiFilm) => {
         const tmdbFilmObj = mappedTmdbFilms.find((tmdb: tmdbFilm) =>
           //tmdb.titulo.toLowerCase() === swapiFilmObj.titulo.toLowerCase()
           tmdb.titulo.toLowerCase().includes(swapiFilmObj.titulo.toLowerCase())
-        )
-        const id = uuidv4()
+        );
+        const id = uuidv4();
 
         if (tmdbFilmObj) {
           return {
@@ -45,7 +45,7 @@ export const findFilmsByTitleAndMerge = async (
             cantidad_votos: tmdbFilmObj.cantidad_votos,
             presupuesto: tmdbFilmObj.presupuesto,
             ingresos: tmdbFilmObj.ingresos,
-          }
+          };
         }
 
         return {
@@ -56,16 +56,16 @@ export const findFilmsByTitleAndMerge = async (
           cantidad_votos: null,
           presupuesto: null,
           ingresos: null,
-        }
+        };
       }
-    )
+    );
 
     // Saving items to DynamoDb Films table
-    await saveMergedFilmService(mergedFilms, filmsRepository)
+    await saveMergedFilmService(mergedFilms, filmsRepository);
 
-    return mergedFilms
+    return mergedFilms;
   } catch (error) {
-    console.error('Error trying to merge the data', error)
-    throw new Error('Error trying to merge the data')
+    console.error("Error trying to merge the data", error);
+    throw new Error("Error trying to merge the data");
   }
-}
+};
