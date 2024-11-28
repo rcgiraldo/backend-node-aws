@@ -8,11 +8,21 @@ import { swapiFilm } from "../../domain/models/swapiFilm"
 import { tmdbFilm } from "../../domain/models/tmdbFilm"
 import { saveMergedFilmService } from "../services/filmService"
 import { v4 as uuidv4 } from "uuid"
+import { getCachedResult, setCachedResult } from "../services/cacheService"
+
+const CACHE_EXPIRY = 1800 // 60 x30 min
 
 export const findFilmsByTitleAndMerge = async (
   title: string,
   filmsRepository: IFilmRepository
 ): Promise<mergedFilm[]> => {
+  const cacheKey = `films:${title}` // Verificar si el resultado está en la caché
+  const cachedResult = await getCachedResult(cacheKey)
+  if (cachedResult) {
+    console.log("Fetching data from cache")
+    return cachedResult
+  }
+
   try {
     const swapiFilms = await getMoviesByTitleFromSwapi(title)
     const tmdbFilms = await getStarWarsMoviesFromTmdb()
@@ -64,6 +74,8 @@ export const findFilmsByTitleAndMerge = async (
 
     // Saving items to DynamoDb Films table
     await saveMergedFilmService(mergedFilms, filmsRepository)
+
+    await setCachedResult(cacheKey, mergedFilms, CACHE_EXPIRY)
 
     return mergedFilms
   } catch (error) {

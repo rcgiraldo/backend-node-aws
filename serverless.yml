@@ -22,6 +22,11 @@ provider:
       Action:
         - dynamodb:PutItem
       Resource: arn:aws:dynamodb:us-east-1:752337386026:table/CustomData
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:GetItem
+      Resource: arn:aws:dynamodb:us-east-1:752337386026:table/Cache
 
 resources:
   Resources:
@@ -75,6 +80,23 @@ resources:
         KeySchema:
           - AttributeName: id
             KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+
+    CacheTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Cache
+        AttributeDefinitions:
+          - AttributeName: cacheKey
+            AttributeType: S
+        KeySchema:
+          - AttributeName: cacheKey
+            KeyType: HASH
+        TimeToLiveSpecification:
+          AttributeName: ttl
+          Enabled: true
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
