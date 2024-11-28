@@ -16,7 +16,7 @@ export const getStarWarsMoviesFromTmdb = async () => {
 
     return response.data.parts
   } catch (error) {
-    console.error('Error getting data from Tmdb', error)
+    console.error('Error getting all the data from Tmdb', error)
     throw new Error('Unable to get the films from Tmdb')
   }
 }

@@ -5,6 +5,62 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
+  environment:
+    FILMS_TABLE_NAME: Films
+    SWAPI_BASE_URL: https://swapi.dev/api
+    TMDB_BASE_URL: https://api.themoviedb.org/3
+    TMDB_API_KEY: ${env:TMDB_API_KEY}
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Scan
+        - dynamodb:PutItem
+      Resource: arn:aws:dynamodb:us-east-1:752337386026:table/Films
+
+resources:
+  Resources:
+    FilmsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Films
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+
+    CustomDataTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: CustomData
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+
+    LogsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Logs
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
 
 functions:
   hello:
@@ -12,4 +68,18 @@ functions:
     events:
       - httpApi:
           path: /
+          method: get
+
+  getMergedFilms:
+    handler: src/application/handlers/filmHandler.getMergedFilmsByTitleHandler
+    events:
+      - httpApi:
+          path: /fusionados
+          method: get
+
+  getAllMergedFilms:
+    handler: src/application/handlers/filmHandler.getMergedFilmsHandler
+    events:
+      - httpApi:
+          path: /fusionados-todos
           method: get

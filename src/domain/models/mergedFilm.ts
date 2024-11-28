@@ -10,9 +10,9 @@ export interface mergedFilm {
   naves_estelares: string[]
   vehiculos: string[]
   especies: string[]
-  popularidad: number
-  calificacion_promedio: number
-  cantidad_votos: number
-  presupuesto: number
-  ingresos: number
+  popularidad?: number
+  calificacion_promedio?: number
+  cantidad_votos?: number
+  presupuesto?: number
+  ingresos?: number
 }
