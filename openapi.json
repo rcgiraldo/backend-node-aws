@@ -1,0 +1,265 @@
+{
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "GreetingResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "A greeting message"
+          }
+        }
+      },
+      "MergedFilmsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Unique identifier for the film"
+                },
+                "titulo": {
+                  "type": "string",
+                  "description": "Title of the film"
+                },
+                "episodio_id": {
+                  "type": "integer",
+                  "description": "Episode ID of the film"
+                },
+                "apertura": {
+                  "type": "string",
+                  "description": "Opening crawl text of the film"
+                },
+                "director": {
+                  "type": "string",
+                  "description": "Director of the film"
+                },
+                "productor": {
+                  "type": "string",
+                  "description": "Producer of the film"
+                },
+                "fecha_estreno": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Release date of the film"
+                },
+                "personajes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Characters in the film"
+                },
+                "planetas": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Planets in the film"
+                },
+                "naves_estelares": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Starships in the film"
+                },
+                "vehiculos": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Vehicles in the film"
+                },
+                "especies": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Species in the film"
+                },
+                "popularidad": {
+                  "type": "number",
+                  "description": "Popularity of the film"
+                },
+                "calificacion_promedio": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "Average rating of the film"
+                },
+                "cantidad_votos": {
+                  "type": "integer",
+                  "description": "Number of votes for the film"
+                },
+                "presupuesto": {
+                  "type": "number",
+                  "description": "Budget of the film"
+                },
+                "ingresos": {
+                  "type": "number",
+                  "description": "Revenue of the film"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Creation date of the record"
+                }
+              }
+            }
+          }
+        }
+      },
+      "SaveCustomDataResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Message indicating the custom data was saved successfully"
+          }
+        }
+      },
+      "PaginatedFilmsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Unique identifier for the film"
+                },
+                "titulo": {
+                  "type": "string",
+                  "description": "Title of the film"
+                },
+                "episodio_id": {
+                  "type": "integer",
+                  "description": "Episode ID of the film"
+                },
+                "apertura": {
+                  "type": "string",
+                  "description": "Opening crawl text of the film"
+                },
+                "director": {
+                  "type": "string",
+                  "description": "Director of the film"
+                },
+                "productor": {
+                  "type": "string",
+                  "description": "Producer of the film"
+                },
+                "fecha_estreno": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Release date of the film"
+                },
+                "personajes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Characters in the film"
+                },
+                "planetas": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Planets in the film"
+                },
+                "naves_estelares": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Starships in the film"
+                },
+                "vehiculos": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Vehicles in the film"
+                },
+                "especies": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Species in the film"
+                },
+                "popularidad": {
+                  "type": "number",
+                  "description": "Popularity of the film"
+                },
+                "calificacion_promedio": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "Average rating of the film"
+                },
+                "cantidad_votos": {
+                  "type": "integer",
+                  "description": "Number of votes for the film"
+                },
+                "presupuesto": {
+                  "type": "number",
+                  "description": "Budget of the film"
+                },
+                "ingresos": {
+                  "type": "number",
+                  "description": "Revenue of the film"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Creation date of the record"
+                }
+              }
+            }
+          },
+          "lastKey": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique identifier for the film"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Creation date of the record"
+              }
+            }
+          }
+        }
+      },
+      "CustomDataRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the custom data"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "The custom data content"
+          }
+        }
+      }
+    }
+  },
+  "info": {
+    "title": "backend-node-aws",
+    "description": "",
+    "version": "2b31a187-c1a8-4040-a590-885f2c0fb039"
+  },
+  "paths": {}
+}
