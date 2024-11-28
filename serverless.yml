@@ -7,6 +7,7 @@ provider:
   region: us-east-1
   environment:
     FILMS_TABLE_NAME: Films
+    CUSTOM_DATA_TABLE_NAME: CustomData
     SWAPI_BASE_URL: https://swapi.dev/api
     TMDB_BASE_URL: https://api.themoviedb.org/3
     TMDB_API_KEY: ${env:TMDB_API_KEY}
@@ -17,6 +18,10 @@ provider:
         - dynamodb:Scan
         - dynamodb:PutItem
       Resource: arn:aws:dynamodb:us-east-1:752337386026:table/Films
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+      Resource: arn:aws:dynamodb:us-east-1:752337386026:table/CustomData
 
 resources:
   Resources:
@@ -83,3 +88,10 @@ functions:
       - httpApi:
           path: /fusionados-todos
           method: get
+
+  saveCustomData:
+    handler: src/application/handlers/customDataHandler.saveCustomDataHandler
+    events:
+      - httpApi:
+          path: /almacenar
+          method: post
